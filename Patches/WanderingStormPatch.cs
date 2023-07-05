@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,5 +37,23 @@ namespace ConstantStorms.Patches
                 __result = 10000000f;
             }
         }
+
+        [HarmonyPatch(typeof(WanderingStorm), "Update")]
+        public static class UpdatePatch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(WanderingStorm __instance)
+            {
+                if (!GameState.playing) return;
+
+                __instance.gameObject.transform.position = Refs.observerMirror.transform.position;
+                __instance.gameObject.transform.position =
+                    new Vector3(__instance.gameObject.transform.position.x, 500, __instance.gameObject.transform.position.z);
+
+                var setEmission = typeof(WanderingStorm).GetMethod("SetEmission", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                setEmission.Invoke(__instance, new object[] { true });
+            }
+        }      
     }
 }
