@@ -18,14 +18,10 @@ namespace ConstantStorms
 
         public static bool Load(UnityModManager.ModEntry modEntry)
         {
-            //new Harmony(modEntry.Info.Id).PatchAll(Assembly.GetExecutingAssembly());
-
             mod = modEntry;
 
             modEntry.OnToggle = OnToggle;
-            modEntry.OnGUI = OnGUI;
-            modEntry.OnSaveGUI = OnSaveGUI;
-
+            
             new Harmony(modEntry.Info.Id).PatchAll(Assembly.GetExecutingAssembly());
 
             return true;
@@ -35,16 +31,6 @@ namespace ConstantStorms
         {
             enabled = value;
             return true;
-        }
-
-        public static void OnGUI(UnityModManager.ModEntry modEntry)
-        {
-            //None
-        }
-
-        public static void OnSaveGUI(UnityModManager.ModEntry modEntry)
-        {
-            //None
         }
     }
 }
